@@ -1,5 +1,7 @@
 package t1.openschool.task02.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import t1.openschool.task02.dto.TaskRequestDTO;
 import t1.openschool.task02.dto.TaskResponseDTO;
@@ -28,8 +30,9 @@ public class TaskController {
     }
 
     @PostMapping(path = "/tasks/")
-    public void create(@RequestBody TaskRequestDTO taskRequestDTO) {
+    public ResponseEntity<Void> create(@RequestBody TaskRequestDTO taskRequestDTO) {
         taskService.save(taskRequestDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/tasks/{id}")
