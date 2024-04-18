@@ -1,0 +1,151 @@
+openapi: "3.0.0"
+info:
+  title: "OpenAPI спецификация учебного проекта №2 @T1Academy"
+  version: "0.0.1"
+servers:
+  - url: http://localhost:8080/
+    description: "Dev server"
+paths:
+  /tasks/:
+    get:
+      summary: "Метод получения всех задач"
+      operationId: "getAll"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TaskResponseDTO"
+    post:
+      summary: "Метод создания задачи"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  
+  /tasks/{id}:
+    get:
+      summary: "Метод получения задачи по id"
+      operationId: "getById"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskResponseDTO"
+                
+    put:
+      summary: "Метод обновления информации о задаче"
+      operationId: "update"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"     
+  
+    delete:
+      summary: "Метод удаления задачи"
+      operationId: "delete"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        "200":
+          description: "OK"  
+          
+components:
+  schemas:
+    TaskRequestDTO:
+      type: "object"
+      required:
+       - title
+       - description
+       - dueDate
+       - completed
+      properties:
+        title:
+          type: "string"
+          example: "Title"
+        description:
+          type: "string"
+          example: "Description"
+        dueDate:
+          type: "string"
+          format: "date"
+          example: "2024-10-10"
+        completed:
+          type: "boolean"
+          example: "false"
+    
+    TaskResponseDTO:
+      type: "object"
+      required:
+       - id
+       - title
+       - description
+       - dueDate
+       - completed
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          example: "123"
+        title:
+          type: "string"
+          example: "Title"
+        description:
+          type: "string"
+          example: "Description"
+        dueDate:
+          type: "string"
+          format: "date"
+          example: "2024-10-10"
+        completed:
+          type: "boolean"
+          example: "false"
+    
+    HttpHeaders:
+      type: "object"
+      properties: { }
+    
+    ResponseEntity:
+      type: "object"
+      properties:
+        headers:
+          $ref: "#/components/schemas/HttpHeaders"
